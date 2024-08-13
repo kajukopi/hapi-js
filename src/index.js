@@ -40,7 +40,7 @@ const http = require("http")
   const port = config.normalizePort(config.PORT)
   const httpServer = http.createServer(server.listener)
 
-  httpServer.listen(port, "0.0.0.0", async () => {
+  httpServer.listen(port, async () => {
     await server.start()
     console.log(`HTTP httpServer running at http://${server.settings.host}:${server.settings.port}/`)
   })
