@@ -1,13 +1,15 @@
+require("dotenv").config()
 const Hapi = require("@hapi/hapi")
 const config = require("./config/config")
 const Vision = require("@hapi/vision")
 const mongoose = require("mongoose")
 const http = require("http")
 
-const init = async () => {
+;(async function init(callback) {
   const server = Hapi.server({
     port: process.env.PORT || 3000,
-    host: process.env.HOST || "0.0.0.0",
+    host: "localhost",
+    autoListen: true,
   })
 
   await server.register(Vision)
@@ -23,28 +25,23 @@ const init = async () => {
   })
 
   // Register routes
-  const routes = require("./routes/userRoutes")
-  server.route(routes)
+  const usersRoutes = require("./routes/userRoutes")
+  server.route(usersRoutes)
 
   await mongoose.connect(config.DATABASE_URL)
 
-  // Create the HTTP server using Node's http module
+  callback(server)
+})(async (server) => {
+  const port = config.normalizePort(process.env.PORT || "3000")
   const httpServer = http.createServer(server.listener)
 
-  // Start the HTTP server
-  httpServer.listen(config.normalizePort(server.settings.port), server.settings.host, () => {
-    console.log(`Server running at http://${server.settings.host}:${server.settings.port}/`)
+  httpServer.listen(port, "0.0.0.0", async () => {
+    await server.start()
+    console.log(`HTTP httpServer running at http://${server.settings.host}:${server.settings.port}/`)
   })
 
   httpServer.on("error", config.onError)
-
-  // Start the server
-  await server.initialize()
-}
-
-process.on("unhandledRejection", (err) => {
-  console.log(err)
+}).catch((err) => {
+  console.error("Failed to start the server:", err)
   process.exit(1)
 })
-
-init()
