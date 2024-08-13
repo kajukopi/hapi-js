@@ -3,27 +3,27 @@ const assetController = require("../controllers/assetController")
 const routes = [
   {
     method: "GET",
-    path: "/asset",
+    path: "/assets",
     handler: assetController.getAllAssets,
   },
   {
     method: "POST",
-    path: "/asset",
+    path: "/assets",
     handler: assetController.createAsset,
   },
   {
     method: "GET",
-    path: "/asset/{id}",
+    path: "/assets/{id}",
     handler: assetController.getAssetById,
   },
   {
     method: "PUT",
-    path: "/asset/{id}",
+    path: "/assets/{id}",
     handler: assetController.updateAsset,
   },
   {
     method: "DELETE",
-    path: "/asset/{id}",
+    path: "/assets/{id}",
     handler: assetController.deleteAsset,
   },
 ]
