@@ -1,15 +1,13 @@
 const Hapi = require("@hapi/hapi")
 const config = require("./config/config")
 const Vision = require("@hapi/vision")
-const Path = require("path")
 const mongoose = require("mongoose")
+const http = require("http")
 
 const init = async () => {
-  await mongoose.connect(config.dbUrl)
-
   const server = Hapi.server({
-    port: config.port, // Set the port here
-    host: "localhost",
+    port: process.env.PORT || 3000,
+    host: "0.0.0.0",
   })
 
   await server.register(Vision)
@@ -28,9 +26,20 @@ const init = async () => {
   const routes = require("./routes/userRoutes")
   server.route(routes)
 
+  await mongoose.connect(config.DATABASE_URL)
+
+  // Create the HTTP server using Node's http module
+  const httpServer = http.createServer(server.listener)
+
+  // Start the HTTP server
+  httpServer.listen(config.normalizePort(server.settings.port), server.settings.host, () => {
+    console.log(`Server running at http://${server.settings.host}:${server.settings.port}/`)
+  })
+
+  httpServer.on("error", config.onError)
+  
   // Start the server
-  await server.start()
-  console.log(`Server running on ${server.info.uri}`)
+  await server.initialize()
 }
 
 process.on("unhandledRejection", (err) => {
