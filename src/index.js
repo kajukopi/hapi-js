@@ -27,9 +27,11 @@ const http = require("http")
   // Register routes
   const userRoutes = require("./routes/userRoutes")
   const assetRoutes = require("./routes/assetRoutes")
+  const serviceRoutes = require("./routes/serviceRoutes")
 
   server.route(userRoutes)
   server.route(assetRoutes)
+  server.route(serviceRoutes)
 
   await mongoose.connect(config.DATABASE_URL)
 
