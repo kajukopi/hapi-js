@@ -7,7 +7,7 @@ const http = require("http")
 
 ;(async function init(callback) {
   const server = Hapi.server({
-    port: process.env.PORT || 3000,
+    port: config.PORT,
     host: "localhost",
     autoListen: true,
   })
@@ -27,7 +27,7 @@ const http = require("http")
   // Register routes
   const userRoutes = require("./routes/userRoutes")
   const assetRoutes = require("./routes/assetRoutes")
-  
+
   server.route(userRoutes)
   server.route(assetRoutes)
 
@@ -35,7 +35,7 @@ const http = require("http")
 
   callback(server)
 })(async (server) => {
-  const port = config.normalizePort(process.env.PORT || "3000")
+  const port = config.normalizePort(config.PORT)
   const httpServer = http.createServer(server.listener)
 
   httpServer.listen(port, "0.0.0.0", async () => {
