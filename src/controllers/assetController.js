@@ -1,3 +1,4 @@
+const Boom = require("@hapi/boom")
 const Asset = require("../models/asset")
 
 const getAllAssets = async (request, h) => {
@@ -5,7 +6,7 @@ const getAllAssets = async (request, h) => {
     const assets = await Asset.find().lean()
     return h.response(assets)
   } catch (err) {
-    return h.response({error: err.message}).code(500)
+    return Boom.badRequest(err.message)
   }
 }
 
@@ -15,7 +16,7 @@ const createAsset = async (request, h) => {
     const savedAsset = await newAsset.save()
     return h.response(savedAsset).code(201)
   } catch (err) {
-    return h.response({error: err.message}).code(500)
+    return Boom.badRequest(err.message)
   }
 }
 
@@ -25,12 +26,12 @@ const getAssetById = async (request, h) => {
     const asset = await Asset.findById({_id: id})
 
     if (!asset) {
-      return h.response({error: "Asset not found"}).code(404)
+      return Boom.notFound("User not found")
     }
 
     return h.response(asset).code(200)
   } catch (err) {
-    return h.response({error: err.message}).code(500)
+    return Boom.badRequest(err.message)
   }
 }
 
@@ -41,12 +42,12 @@ const updateAsset = async (request, h) => {
     const asset = await Asset.findByIdAndUpdate({_id: id}, {name})
 
     if (!asset) {
-      return h.response({error: "Asset not found"}).code(404)
+      return Boom.notFound("User not found")
     }
 
     return h.response(asset).code(200)
   } catch (err) {
-    return h.response({error: err.message}).code(500)
+    return Boom.badRequest(err.message)
   }
 }
 
@@ -56,12 +57,12 @@ const deleteAsset = async (request, h) => {
     const asset = await Asset.findByIdAndDelete({_id: id})
 
     if (!asset) {
-      return h.response({error: "Asset not found"}).code(404)
+      return Boom.notFound("User not found")
     }
 
     return h.response(asset).code(200)
   } catch (err) {
-    return h.response({error: err.message}).code(500)
+    return Boom.badRequest(err.message)
   }
 }
 
