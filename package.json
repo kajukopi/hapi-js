@@ -1,0 +1,28 @@
+{
+  "name": "hapi-js",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.10",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "handlebars": "^4.7.8",
+    "joi": "^17.13.3",
+    "mongoose": "^8.5.2"
+  },
+  "scripts": {
+    "dev": "nodemon ./src/index",
+    "start": "node ./src/index",
+    "mongo-start": "docker run -d -p 27017:27017 --name my-mongo -v mongo-data:/data/db mongo",
+    "mongo-stop": "docker stop my-mongo",
+    "mongo-remove": "docker rm -f my-mongo"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "nodemonConfig": {
+    "ext": "js,mjs,json,css,html,hbs"
+  },
+  "version": "1.0.0"
+}
