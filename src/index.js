@@ -8,7 +8,6 @@ const http = require("http")
 ;(async function init() {
   const server = Hapi.server({
     port: config.PORT,
-    host: "localhost",
     autoListen: true,
   })
 
@@ -49,14 +48,16 @@ const http = require("http")
     await server.initialize()
     const port = config.normalizePort(config.PORT)
     const httpServer = http.createServer(server.listener)
-    
+
     httpServer.listen(port, "0.0.0.0", () => {
-      console.log(`HTTP httpServer running at http://${server.settings.host}:${server.settings.port}/`)
+      const addr = server.listener.address()
+      const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port
+      console.log("App started. Listening on " + bind)
     })
-    
-    await server.start()
 
     httpServer.on("error", config.onError)
+
+    await server.start()
   })
   .catch((err) => {
     console.error("Failed to start the server:", err)
