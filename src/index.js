@@ -44,12 +44,15 @@ const http = require("http")
   return server
 })()
   .then(async (server) => {
-    const httpServer = http.createServer(server.listener)
-
     await server.start()
 
+    const httpServer = http.createServer(server.listener)
+
+    console.log(server.settings)
+    server.settings.port = config.PORT
+
     httpServer.listen(config.PORT, "0.0.0.0", () => {
-      const addr = server.listener.address()
+      const addr = httpServer.address()
       const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port
       console.log("App started. Listening on " + bind)
     })
