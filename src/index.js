@@ -44,8 +44,9 @@ const http = require("http")
   return server
 })()
   .then(async (server) => {
-    await server.initialize()
     const httpServer = http.createServer(server.listener)
+
+    await server.start()
 
     httpServer.listen(config.PORT, "0.0.0.0", () => {
       const addr = server.listener.address()
@@ -54,7 +55,6 @@ const http = require("http")
     })
 
     httpServer.on("error", config.onError)
-    await server.start()
   })
   .catch((err) => {
     console.error("Failed to start the server:", err)
