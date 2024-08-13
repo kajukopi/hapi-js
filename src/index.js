@@ -8,7 +8,6 @@ const http = require("http")
 ;(async function init() {
   const server = Hapi.server({
     port: config.PORT,
-    autoListen: true,
   })
 
   await server.register(Vision)
@@ -46,17 +45,15 @@ const http = require("http")
 })()
   .then(async (server) => {
     await server.initialize()
-    const port = config.normalizePort(config.PORT)
     const httpServer = http.createServer(server.listener)
 
-    httpServer.listen(port, "0.0.0.0", () => {
+    httpServer.listen(config.PORT, "0.0.0.0", () => {
       const addr = server.listener.address()
       const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port
       console.log("App started. Listening on " + bind)
     })
 
     httpServer.on("error", config.onError)
-
     await server.start()
   })
   .catch((err) => {

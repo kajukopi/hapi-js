@@ -1,4 +1,7 @@
 require("dotenv").config()
+
+const port = normalizePort(process.env.PORT || "3000")
+
 function normalizePort(val) {
   const port = parseInt(val, 10)
 
@@ -34,16 +37,9 @@ function onError(error) {
   }
 }
 
-function onListening(server) {
-  const addr = server.address()
-  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port
-  console.log("App started. Listening on " + bind)
-}
-
 module.exports = {
-  PORT: process.env.PORT || "3000",
+  PORT: port,
   DATABASE_URL: process.env.DATABASE_URL,
   onError,
-  onListening,
   normalizePort,
 }
