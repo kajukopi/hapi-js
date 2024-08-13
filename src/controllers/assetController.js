@@ -6,7 +6,7 @@ const getAllAssets = async (request, h) => {
     const assets = await Asset.find().lean()
     return h.response(assets)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -16,7 +16,7 @@ const createAsset = async (request, h) => {
     const savedAsset = await newAsset.save()
     return h.response(savedAsset).code(201)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -31,7 +31,7 @@ const getAssetById = async (request, h) => {
 
     return h.response(asset).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -47,7 +47,7 @@ const updateAsset = async (request, h) => {
 
     return h.response(asset).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -62,7 +62,7 @@ const deleteAsset = async (request, h) => {
 
     return h.response(asset).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 

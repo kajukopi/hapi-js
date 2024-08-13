@@ -5,7 +5,7 @@ const Vision = require("@hapi/vision")
 const mongoose = require("mongoose")
 const http = require("http")
 
-;(async function init(callback) {
+;(async function init() {
   const server = Hapi.server({
     port: config.PORT,
     host: "localhost",
@@ -33,20 +33,32 @@ const http = require("http")
   server.route(assetRoutes)
   server.route(serviceRoutes)
 
-  await mongoose.connect(config.DATABASE_URL)
-
-  callback(server)
-})(async (server) => {
-  const port = config.normalizePort(config.PORT)
-  const httpServer = http.createServer(server.listener)
-
-  httpServer.listen(port, async () => {
-    await server.start()
-    console.log(`HTTP httpServer running at http://${server.settings.host}:${server.settings.port}/`)
+  server.events.on("log", (event, tags) => {
+    if (tags.error) {
+      console.log(event)
+    }
   })
 
-  httpServer.on("error", config.onError)
-}).catch((err) => {
-  console.error("Failed to start the server:", err)
-  process.exit(1)
-})
+  server.log(["test", "error"], "Test event")
+
+  await mongoose.connect(config.DATABASE_URL)
+
+  return server
+})()
+  .then(async (server) => {
+    await server.initialize()
+    const port = config.normalizePort(config.PORT)
+    const httpServer = http.createServer(server.listener)
+    
+    httpServer.listen(port, "0.0.0.0", () => {
+      console.log(`HTTP httpServer running at http://${server.settings.host}:${server.settings.port}/`)
+    })
+    
+    await server.start()
+
+    httpServer.on("error", config.onError)
+  })
+  .catch((err) => {
+    console.error("Failed to start the server:", err)
+    process.exit(1)
+  })

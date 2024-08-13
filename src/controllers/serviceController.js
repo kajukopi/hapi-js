@@ -6,7 +6,7 @@ const getAllServices = async (request, h) => {
     const services = await Service.find().lean()
     return h.response(services)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -16,7 +16,7 @@ const createService = async (request, h) => {
     const savedService = await newService.save()
     return h.response(savedService).code(201)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -31,7 +31,7 @@ const getServiceById = async (request, h) => {
 
     return h.response(service).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -47,7 +47,7 @@ const updateService = async (request, h) => {
 
     return h.response(service).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -62,7 +62,7 @@ const deleteService = async (request, h) => {
 
     return h.response(service).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 

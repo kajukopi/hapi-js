@@ -6,7 +6,7 @@ const getAllUsers = async (request, h) => {
     const users = await User.find().lean()
     return h.response(users)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -16,7 +16,7 @@ const createUser = async (request, h) => {
     const savedUser = await newUser.save()
     return h.response(savedUser).code(201)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -31,7 +31,7 @@ const getUserById = async (request, h) => {
 
     return h.response(user).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -47,7 +47,7 @@ const updateUser = async (request, h) => {
 
     return h.response(user).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
@@ -62,7 +62,7 @@ const deleteUser = async (request, h) => {
 
     return h.response(user).code(200)
   } catch (err) {
-    return Boom.badRequest(err.message)
+    return Boom.badRequest(err)
   }
 }
 
