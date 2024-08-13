@@ -7,7 +7,7 @@ const http = require("http")
 const init = async () => {
   const server = Hapi.server({
     port: process.env.PORT || 3000,
-    host: "0.0.0.0",
+    host: process.env.HOST || "0.0.0.0",
   })
 
   await server.register(Vision)
@@ -37,7 +37,7 @@ const init = async () => {
   })
 
   httpServer.on("error", config.onError)
-  
+
   // Start the server
   await server.initialize()
 }
